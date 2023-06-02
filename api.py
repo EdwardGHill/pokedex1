@@ -1,9 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from models import Pokedex
 import random
 
 app = FastAPI()
 pokedex = Pokedex('Data/pokemon_data.csv')
+
+origins = ["http://127.0.0.1:5500"]  # Replace with the actual URL of your front-end
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 @app.get("/pokemon")
 def get_all_pokemon():
