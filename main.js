@@ -23,7 +23,31 @@ function displayTeam(teamData) {
     // Iterate over each Pokemon in the teamData
     teamData.forEach(pokemon => {
         const pokemonElement = document.createElement("p");
-        pokemonElement.textContent = `${pokemon.name} (${pokemon.type1})`;
+        pokemonElement.textContent = `${pokemon.name} (${pokemon.type1}) (${pokemon.type2})`;
         teamContainer.appendChild(pokemonElement);
     });
 }
+
+function searchPokemon() {
+    const inputElement = document.getElementById('pokemonNameInput');
+    const pokemonName = inputElement.value;
+  
+    fetch(`http://localhost:8000/pokemon/search/${pokemonName}`)
+      .then(response => response.json())
+      .then(data => {
+        const pokemonListElement = document.getElementById('pokemonList');
+        pokemonListElement.innerHTML = '';
+  
+        data.forEach(pokemon => {
+          const listItem = document.createElement('li');
+          listItem.textContent = pokemon.name;
+          pokemonListElement.appendChild(listItem);
+        });
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+}
+  
+const searchButton = document.getElementById('searchButton');
+searchButton.addEventListener('click', searchPokemon);
